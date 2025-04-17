@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GPT Signal Platform</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #1e1e2f;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    main {
+      padding: 1rem;
+    }
+    .signal-card {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
+    }
+    .signal-card h3 {
+      margin: 0 0 0.5rem 0;
+    }
+    .filter-panel {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    select, button {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      background-color: #1e1e2f;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GPT Signal Platform</h1>
+    <p>Live Manual-style Signals for XAUUSD, BTCUSD, EURUSD, GBPUSD, GBPJPY</p>
+  </header>
+  <main>
+    <div class="filter-panel">
+      <select id="pair-select">
+        <option value="all">All Pairs</option>
+        <option value="XAUUSD">XAUUSD</option>
+        <option value="BTCUSD">BTCUSD</option>
+        <option value="EURUSD">EURUSD</option>
+        <option value="GBPUSD">GBPUSD</option>
+        <option value="GBPJPY">GBPJPY</option>
+      </select>
+      <select id="timeframe-select">
+        <option value="all">All Timeframes</option>
+        <option value="M15">M15</option>
+        <option value="H1">H1</option>
+        <option value="H4">H4</option>
+      </select>
+      <button onclick="applyFilters()">Filter</button>
+    </div><div id="signal-container">
+  <!-- Signals dynamically inserted here -->
+</div>
+
+  </main>
+  <footer>
+    Powered by GPT Signal Logic | v1.0
+  </footer>  <script>
+    const signals = [
+      { pair: "XAUUSD", tf: "M15", confidence: "High", direction: "Buy", time: "12:30 UTC" },
+      { pair: "BTCUSD", tf: "H1", confidence: "Medium", direction: "Sell", time: "13:00 UTC" },
+      { pair: "EURUSD", tf: "H4", confidence: "High", direction: "Buy", time: "14:15 UTC" },
+      { pair: "GBPUSD", tf: "H1", confidence: "Low", direction: "Sell", time: "15:00 UTC" },
+      { pair: "GBPJPY", tf: "M15", confidence: "High", direction: "Sell", time: "15:30 UTC" },
+    ];
+
+    function displaySignals(filtered) {
+      const container = document.getElementById("signal-container");
+      container.innerHTML = "";
+      filtered
+        .filter(s => s.confidence !== "Low")
+        .forEach(sig => {
+          container.innerHTML += `
+            <div class="signal-card">
+              <h3>${sig.pair} (${sig.tf})</h3>
+              <p><strong>Signal:</strong> ${sig.direction}</p>
+              <p><strong>Confidence:</strong> ${sig.confidence}</p>
+              <p><strong>Time:</strong> ${sig.time}</p>
+            </div>
+          `;
+        });
+    }
+
+    function applyFilters() {
+      const pair = document.getElementById("pair-select").value;
+      const tf = document.getElementById("timeframe-select").value;
+
+      const filtered = signals.filter(sig => {
+        return (pair === "all" || sig.pair === pair) &&
+               (tf === "all" || sig.tf === tf);
+      });
+      displaySignals(filtered);
+    }
+
+    // Initial display
+    displaySignals(signals);
+  </script></body>
+</html>
